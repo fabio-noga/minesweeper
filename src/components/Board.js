@@ -32,6 +32,7 @@ const Board = () =>{
     //Flag Cell
     const updateFlag = (e,x,y) => {
         e.preventDefault();
+        if(grid[x][y].revealed || gameOver)return;
         let newGrid = JSON.parse(JSON.stringify(grid));
         if(newGrid[x][y].flagged) {
             newGrid[x][y].flagged=false;
