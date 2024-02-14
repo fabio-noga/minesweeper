@@ -7,7 +7,6 @@ import Timer from './Timer';
 import TopBar from './TopBar';
 
 
-
 const Board = () =>{
     const [width, setWidth] = useState(10);
     const [height, setHeight] = useState(10);
@@ -17,6 +16,7 @@ const Board = () =>{
     const [nonMineCount, setNonMineCount] = useState(0);
     const [mineLocations, setMineLocations] = useState([]);
     const [gameOver, setGameOver] = useState(false);
+    const [gameOverState, setGameOverState] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
     const [flagsUsed, setFlagsUsed] = useState(bombs);
 
@@ -64,7 +64,7 @@ const Board = () =>{
             setGrid(newRevealedBoard.arr);
             setNonMineCount(newRevealedBoard.newNonMinesCount);
             if(newRevealedBoard.newNonMinesCount===0){
-                alert("Congratulations, you won!");
+                setGameOverState(true);
                 setGameOver(true);
             }
         }
@@ -75,11 +75,12 @@ const Board = () =>{
         setGameStarted(false);
         freshBoard(width, height, bombs);
         setGameOver(false);
+        setGameOverState(false);
         setFlagsUsed(bombs);
-      };
+    };
 
     return <div style={{left:"50%",transform:"translateX(-50%)", position: "relative", width: width*40, boxShadow:"0px 0px 12px #000"}}>
-        {gameOver && <Modal restartGame={restartGame}/>}
+        {gameOver && <Modal isWin={gameOverState} restartGame={restartGame}/>}
         <TopBar flagsUsed={flagsUsed} gameOver={gameOver} gameStarted={gameStarted} />
         {grid.map((singleRow, index1)=>{
         return (
